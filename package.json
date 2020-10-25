@@ -1,0 +1,41 @@
+{
+  "name": "ez-react",
+  "version": "1.0.0",
+  "description": "A simple implementation of react",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "webpack --watch",
+    "test": "jest",
+    "build": "webpack",
+    "deploy:local": "npm link"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cw1997/ez-react.git"
+  },
+  "keywords": [
+    "react",
+    "framework",
+    "typescript",
+    "javascript"
+  ],
+  "author": "cw1997",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/cw1997/ez-react/issues"
+  },
+  "homepage": "https://github.com/cw1997/ez-react#readme",
+  "devDependencies": {
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
+    "@babel/preset-react": "^7.12.1",
+    "@babel/preset-typescript": "^7.12.1",
+    "@types/jest": "^26.0.15",
+    "babel-loader": "^8.1.0",
+    "jest": "^26.6.1",
+    "typescript": "^4.0.2",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12"
+  }
+}
