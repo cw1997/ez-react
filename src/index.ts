@@ -1,9 +1,14 @@
-import React from "./React";
+import createElement from "./createElement";
+import Component, {IClassComponent} from "./Component";
+import {FC} from "./FC";
+
+export type ReactComponent<P, S> = FC<P> | IClassComponent<P, S>;
 
 export type VirtualDOM = {
-    tagName: string
-    attributes?: any
-    children?: VirtualDOM[]
+  tagName: string | ReactComponent<any, any>
+  attributes?: Partial<HTMLElement>
+  children?: Array<VirtualDOM | number | string | boolean>
 }
 
-export default React;
+export default {createElement, Component};
+export {Component, FC};
