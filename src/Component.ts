@@ -1,23 +1,9 @@
-import {FC, ReactComponent, VirtualDOM} from "./index";
 import ReactDOM from 'ez-react-dom';
 
-export interface IClassComponent<P, S> {
-  // constructor: Function
-  props: P;
-  setState(updateState: any): S;
-  componentWillMount?();
-  componentWillReceiveProps?(props: P);
-  componentWillUpdate?();
-  componentDidUpdate?();
-  componentDidMount?();
-  componentWillUnmount?();
-  render(): VirtualDOM;
-  node?: HTMLElement | Text
-}
-
-export default abstract class Component<P, S> implements IClassComponent<P, S> {
+export default abstract class Component<P, S> {
+  public node?: HTMLElement | Text;
   public props: P;
-  protected state: S;
+  public state: S;
   public constructor(props?: P) {
     this.props = props;
   }
@@ -28,9 +14,27 @@ export default abstract class Component<P, S> implements IClassComponent<P, S> {
     return nextState;
   }
   public abstract render();
+  public componentWillMount() {};
+  /**
+   * @deprecate
+   * @param nextProps
+   */
+  public componentWillReceiveProps(nextProps: P) {};
+  public getDerivedStateFromProps(nextProps: P, prevState: S) {};
+  public shouldComponentUpdate(nextProps: P, prevState: S) {return true};
+  /**
+   * @deprecate
+   * @param nextProps
+   * @param nextState
+   */
+  public componentWillUpdate(nextProps: P, nextState: S) {};
+  public getSnapshotBeforeUpdate(nextProps: P, nextState: S) {};
+  public componentDidUpdate(prevProps: P, prevState: S) {};
+  public componentDidMount() {};
+  public componentWillUnmount() {};
 }
 
-export function create<P, S>(component: any, properties: P): IClassComponent<P, S> {
+export function create<P, S>(component: any, properties: P): Component<P, S> {
   let instance: Component<P, S>;
   // class component
   if (Component.isPrototypeOf(component)) {
@@ -47,42 +51,36 @@ export function create<P, S>(component: any, properties: P): IClassComponent<P, 
   return instance;
 }
 
-export function setProps(component: IClassComponent<any, any>, properties) {
+export function setProps<P, S>(component: Component<P, S>, properties: P) {
   if (component.node) {
-    if (component.componentWillReceiveProps) {
-      component.componentWillReceiveProps(properties);
-    }
+    component.componentWillReceiveProps(properties);
   } else {
-    if (component.componentWillMount) {
-      component.componentWillMount();
-    }
+    component.componentWillMount();
   }
+
   component.props = properties;
   render(component);
 }
 
-export function render(component: IClassComponent<any, any>) {
-  if (component.node && component.componentWillUpdate) {
-    component.componentWillUpdate();
+export function render<P, S>(component: Component<P, S>) {
+  const nextProps: P = component.props;
+  const nextState: S = component.state;
+  if (component.node) {
+    component.componentWillUpdate(nextProps, nextState);
   }
 
   const newNode = ReactDOM._render(component.render());
 
-  if (component.componentDidUpdate) {
-    component.componentDidUpdate();
-  }
+  component.componentDidUpdate(nextProps, nextState);
 
   const oldNode = component.node;
-  // console.log('newNode', newNode, 'oldNode', oldNode, );
   if (oldNode) {
     if (oldNode.parentNode) {
       oldNode.parentNode.replaceChild(newNode, oldNode);
     }
   }
 
-  if (component.componentDidMount) {
-    component.componentDidMount();
-  }
+  component.componentDidMount();
 
   component.node = newNode;
 }
