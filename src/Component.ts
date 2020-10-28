@@ -70,6 +70,10 @@ export function render<P, S>(component: Component<P, S>) {
     component.componentWillUpdate(nextProps, nextState);
   }
 
+  if (!component.shouldComponentUpdate(nextProps, nextState)) {
+    return;
+  }
+
   const newNode = ReactDOM._render(component.render());
 
   component.componentDidUpdate(nextProps, nextState);
