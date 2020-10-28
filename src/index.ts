@@ -1,8 +1,8 @@
 import createElement from "./createElement";
-import Component, {IClassComponent} from "./Component";
+import Component from "./Component";
 import {FC} from "./FC";
 
-export type ReactComponent<P, S> = FC<P> | IClassComponent<P, S>;
+export type ReactComponent<P, S> = FC<P> | Component<P, S>;
 
 export type VirtualDOM = {
   tagName: string | ReactComponent<any, any>
