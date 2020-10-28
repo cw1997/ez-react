@@ -20,18 +20,19 @@ export default abstract class Component<P, S> {
    * @param nextProps
    */
   public componentWillReceiveProps(nextProps: P) {};
-  public getDerivedStateFromProps(nextProps: P, prevState: S) {};
-  public shouldComponentUpdate(nextProps: P, prevState: S) {return true};
+  public getDerivedStateFromProps(nextProps: P, nextState: S) {};
+  public shouldComponentUpdate(nextProps: P, nextState: S) {return true};
   /**
    * @deprecate
    * @param nextProps
    * @param nextState
    */
   public componentWillUpdate(nextProps: P, nextState: S) {};
-  public getSnapshotBeforeUpdate(nextProps: P, nextState: S) {};
-  public componentDidUpdate(prevProps: P, prevState: S) {};
+  public getSnapshotBeforeUpdate(prevProps: P, prevState: S) {};
+  public componentDidUpdate(prevProps: P, prevState: S, snapshot?) {};
   public componentDidMount() {};
   public componentWillUnmount() {};
+  public componentDidCatch(error, info) {};
 }
 
 export function create<P, S>(component: any, properties: P): Component<P, S> {
