@@ -10,7 +10,7 @@ export default abstract class Component<P, S> {
   public setState(updateState: any) {
     const nextState: S = {...this.state, ...updateState};
     this.state = nextState;
-    render(this);
+    render(this, this.props, nextState);
     return nextState;
   }
   public abstract render();
@@ -19,20 +19,20 @@ export default abstract class Component<P, S> {
    * @deprecate
    * @param nextProps
    */
-  public componentWillReceiveProps(nextProps: P) {};
-  public getDerivedStateFromProps(nextProps: P, nextState: S) {};
+  public componentWillReceiveProps?(nextProps: P);
+  public getDerivedStateFromProps?(nextProps: P, nextState: S);
   public shouldComponentUpdate(nextProps: P, nextState: S) {return true};
   /**
    * @deprecate
    * @param nextProps
    * @param nextState
    */
-  public componentWillUpdate(nextProps: P, nextState: S) {};
-  public getSnapshotBeforeUpdate(prevProps: P, prevState: S) {};
-  public componentDidUpdate(prevProps: P, prevState: S, snapshot?) {};
-  public componentDidMount() {};
-  public componentWillUnmount() {};
-  public componentDidCatch(error, info) {};
+  public componentWillUpdate?(nextProps: P, nextState: S);
+  public getSnapshotBeforeUpdate?(prevProps: P, prevState: S);
+  public componentDidUpdate?(prevProps: P, prevState: S, snapshot?);
+  public componentDidMount?();
+  public componentWillUnmount?();
+  public componentDidCatch?(error, info);
 }
 
 export function create<P, S>(component: any, properties: P): Component<P, S> {
@@ -59,24 +59,37 @@ export function setProps<P, S>(component: Component<P, S>, properties: P) {
     component.componentWillMount();
   }
 
-  component.props = properties;
-  render(component);
+  render(component, properties, component.state);
 }
 
-export function render<P, S>(component: Component<P, S>) {
-  const nextProps: P = component.props;
-  const nextState: S = component.state;
+export function render<P, S>(component: Component<P, S>, nextProps: P, nextState: S) {
+  const prevProps: P = component.props;
+  const prevState: S = component.state;
+
   if (component.node) {
-    component.componentWillUpdate(nextProps, nextState);
+    if (component.getDerivedStateFromProps(nextProps, nextState)) {
+      component.getDerivedStateFromProps(nextProps, nextState);
+    } else if (component.componentWillUpdate) {
+      component.componentWillUpdate(nextProps, nextState);
+    }
   }
 
   if (!component.shouldComponentUpdate(nextProps, nextState)) {
     return;
   }
 
+  component.props = nextProps;
+  component.state = nextState;
   const newNode = ReactDOM._render(component.render());
 
-  component.componentDidUpdate(nextProps, nextState);
+  if (component.node) {
+    if (component.getSnapshotBeforeUpdate) {
+      const snapshot = component.getSnapshotBeforeUpdate(prevProps, prevState);
+      component.componentDidUpdate(prevProps, prevState, snapshot);
+    } else if (component.componentDidUpdate) {
+      component.componentDidUpdate(prevProps, prevState);
+    }
+  }
 
   const oldNode = component.node;
   if (oldNode) {
@@ -85,7 +98,9 @@ export function render<P, S>(component: Component<P, S>) {
     }
   }
 
-  component.componentDidMount();
+  if (component.componentDidMount) {
+    component.componentDidMount();
+  }
 
   component.node = newNode;
 }
