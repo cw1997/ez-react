@@ -35,16 +35,16 @@ export default abstract class Component<P, S> {
   public componentDidCatch?(error, info);
 }
 
-export function create<P, S>(component: any, properties: P): Component<P, S> {
+export function create<P, S>(component: Function | ObjectConstructor, properties: P): Component<P, S> {
   let instance: Component<P, S>;
   // class component
   if (Component.isPrototypeOf(component)) {
-    instance = new component(properties);
+    instance = new (component as ObjectConstructor)(properties) as Component<P, S>;
     // function component
   } else {
     class FunctionComponent extends Component<P, S> {
       render() {
-        return component(this.props)
+        return (component as Function)(this.props)
       };
     }
     instance = new FunctionComponent(properties);
