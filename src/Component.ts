@@ -92,15 +92,9 @@ export function render<P, S>(component: Component<P, S>, nextProps: P, nextState
   }
 
   const oldNode = component.node;
-  if (oldNode) {
-    if (oldNode.parentNode) {
-      oldNode.parentNode.replaceChild(newNode, oldNode);
-    }
-  }
+  oldNode?.parentNode?.replaceChild(newNode, oldNode);
 
-  if (component.componentDidMount) {
-    component.componentDidMount();
-  }
+  component.componentDidMount?.();
 
   component.node = newNode;
 }
