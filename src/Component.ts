@@ -67,7 +67,7 @@ export function render<P, S>(component: Component<P, S>, nextProps: P, nextState
   const prevState: S = component.state;
 
   if (component.node) {
-    if (component.getDerivedStateFromProps(nextProps, nextState)) {
+    if (component.getDerivedStateFromProps) {
       component.getDerivedStateFromProps(nextProps, nextState);
     } else if (component.componentWillUpdate) {
       component.componentWillUpdate(nextProps, nextState);
