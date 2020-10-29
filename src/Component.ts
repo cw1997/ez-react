@@ -7,7 +7,7 @@ export default abstract class Component<P, S> {
   public constructor(props?: P) {
     this.props = props;
   }
-  public setState(updateState: [keyof S]) {
+  public setState(updateState: Partial<S>) {
     const nextState: S = {...this.state, ...updateState};
     this.state = nextState;
     render(this, this.props, nextState);
