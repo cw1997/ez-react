@@ -4,7 +4,7 @@ import {FC} from "./FC";
 
 export type ReactComponent<P, S> = FC<P> | Component<P, S>;
 
-export interface ReactElement extends Partial<Node> {
+export interface ReactElement extends Node {
   key?: string | number
   _node?: Node
 }
