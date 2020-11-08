@@ -1,6 +1,7 @@
 import ReactDOM from 'ez-react-dom';
 
 export default abstract class Component<P, S> {
+  public _instance: Component<P, S>;
   public _node?: Node;
   public props: P;
   public state: S;
@@ -97,4 +98,11 @@ export function render<P, S>(component: Component<P, S>, nextProps: P, nextState
   component.componentDidMount?.();
 
   component._node = newNode;
+}
+
+export function unmount<P, S>(component: Component<P, S>) {
+  component.componentWillUnmount?.();
+
+  const node = component._node;
+  node.parentNode.removeChild(node);
 }
