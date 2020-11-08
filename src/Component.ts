@@ -1,7 +1,7 @@
 import ReactDOM from 'ez-react-dom';
 
 export default abstract class Component<P, S> {
-  public node?: HTMLElement | Text;
+  public _node?: Node;
   public props: P;
   public state: S;
   public constructor(props?: P) {
@@ -53,7 +53,7 @@ export function create<P, S>(component: Function | ObjectConstructor, properties
 }
 
 export function setProps<P, S>(component: Component<P, S>, properties: P) {
-  if (component.node) {
+  if (component._node) {
     component.componentWillReceiveProps(properties);
   } else {
     component.componentWillMount();
@@ -66,7 +66,7 @@ export function render<P, S>(component: Component<P, S>, nextProps: P, nextState
   const prevProps: P = component.props;
   const prevState: S = component.state;
 
-  if (component.node) {
+  if (component._node) {
     if (component.getDerivedStateFromProps) {
       component.getDerivedStateFromProps(nextProps, nextState);
     } else if (component.componentWillUpdate) {
@@ -82,7 +82,7 @@ export function render<P, S>(component: Component<P, S>, nextProps: P, nextState
   component.state = nextState;
   const newNode = ReactDOM._render(component.render());
 
-  if (component.node) {
+  if (component._node) {
     if (component.getSnapshotBeforeUpdate) {
       const snapshot = component.getSnapshotBeforeUpdate(prevProps, prevState);
       component.componentDidUpdate(prevProps, prevState, snapshot);
@@ -91,10 +91,10 @@ export function render<P, S>(component: Component<P, S>, nextProps: P, nextState
     }
   }
 
-  const oldNode = component.node;
+  const oldNode = component._node;
   oldNode?.parentNode?.replaceChild(newNode, oldNode);
 
   component.componentDidMount?.();
 
-  component.node = newNode;
+  component._node = newNode;
 }
