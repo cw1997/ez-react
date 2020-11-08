@@ -70,8 +70,8 @@ export function render<P, S>(component: Component<P, S>, nextProps: P, nextState
   if (component._node) {
     if (component.getDerivedStateFromProps) {
       component.getDerivedStateFromProps(nextProps, nextState);
-    } else if (component.componentWillUpdate) {
-      component.componentWillUpdate(nextProps, nextState);
+    } else {
+      component.componentWillUpdate?.(nextProps, nextState);
     }
   }
 
