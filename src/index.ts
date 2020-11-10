@@ -4,22 +4,30 @@ import {FC} from "./FC";
 
 export type ReactComponent<P, S> = FC<P> | Component<P, S>;
 
-export interface ReactElement extends Node {
-  key?: string | number
+export type Key = string | number
+
+export interface ReactHTMLElement extends HTMLElement {
+  key?: Key
   _node?: Node
 }
 
-export interface ComponentElement<P, S> extends ReactElement {
+export interface ReactTextElement extends Text {
+}
+
+export interface ReactComponentElement<P, S> extends ReactHTMLElement {
   _instance?: Component<P, S>
 }
+
+export type ReactElement = ReactHTMLElement | ReactTextElement | ReactComponentElement<any, any>
 
 export type VirtualTextNode = number | string | boolean
 export type VirtualNode = VirtualDOM | VirtualTextNode
 
 export interface VirtualDOM {
   tagName: string | ReactComponent<any, any>
-  attributes?: ComponentElement<any, any>
+  attributes?: ReactComponentElement<any, any>
   children?: VirtualNode[]
+  key?: Key
 }
 
 
