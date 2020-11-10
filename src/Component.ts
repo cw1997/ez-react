@@ -81,7 +81,7 @@ export function render<P, S>(component: Component<P, S>, nextProps: P, nextState
 
   component.props = nextProps;
   component.state = nextState;
-  const newNode = ReactDOM._render(component.render());
+  const newNode = ReactDOM._directRender(component.render());
 
   if (component._node) {
     if (component.getSnapshotBeforeUpdate) {
