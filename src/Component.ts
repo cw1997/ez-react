@@ -1,8 +1,9 @@
 import ReactDOM from 'ez-react-dom';
+import {ReactComponentElement, ReactElement} from "./index";
 
 export default abstract class Component<P, S> {
   public _instance: Component<P, S>;
-  public _node?: Node;
+  public _node?: ReactComponentElement<P, S>;
   public props: P;
   public state: S;
   public constructor(props?: P) {
@@ -53,51 +54,56 @@ export function create<P, S>(component: Function | ObjectConstructor, properties
   return instance;
 }
 
-export function setProps<P, S>(component: Component<P, S>, properties: P) {
-  if (component._node) {
-    component.componentWillReceiveProps(properties);
+export function setProps<P, S>(instance: Component<P, S>, properties: P) {
+  if (instance._node) {
+    instance.componentWillReceiveProps(properties);
   } else {
-    component.componentWillMount();
+    instance.componentWillMount();
   }
 
-  render(component, properties, component.state);
+  render(instance, properties, instance.state);
 }
 
-export function render<P, S>(component: Component<P, S>, nextProps: P, nextState: S) {
-  const prevProps: P = component.props;
-  const prevState: S = component.state;
+export function render<P, S>(instance: Component<P, S>, nextProps: P, nextState: S) {
+  const prevProps: P = instance.props;
+  const prevState: S = instance.state;
+  const oldNode = instance._node;
 
-  if (component._node) {
-    if (component.getDerivedStateFromProps) {
-      component.getDerivedStateFromProps(nextProps, nextState);
+  if (oldNode) {
+    if (instance.getDerivedStateFromProps) {
+      instance.getDerivedStateFromProps(nextProps, nextState);
     } else {
-      component.componentWillUpdate?.(nextProps, nextState);
+      instance.componentWillUpdate?.(nextProps, nextState);
     }
   }
 
-  if (!component.shouldComponentUpdate(nextProps, nextState)) {
+  if (!instance.shouldComponentUpdate(nextProps, nextState)) {
     return;
   }
 
-  component.props = nextProps;
-  component.state = nextState;
-  const newNode = ReactDOM._directRender(component.render());
+  instance.props = nextProps;
+  instance.state = nextState;
+  // const newNode = ReactDOM._directRender(component.render());
+  const newNode: ReactElement = ReactDOM._diffRender(oldNode, instance.render());
+  newNode._node = newNode;
+  newNode._instance = instance;
+  instance._node = newNode
 
-  if (component._node) {
-    if (component.getSnapshotBeforeUpdate) {
-      const snapshot = component.getSnapshotBeforeUpdate(prevProps, prevState);
-      component.componentDidUpdate(prevProps, prevState, snapshot);
-    } else if (component.componentDidUpdate) {
-      component.componentDidUpdate(prevProps, prevState);
+  if (oldNode) {
+    if (instance.getSnapshotBeforeUpdate) {
+      const snapshot = instance.getSnapshotBeforeUpdate(prevProps, prevState);
+      instance.componentDidUpdate(prevProps, prevState, snapshot);
+    } else if (instance.componentDidUpdate) {
+      instance.componentDidUpdate(prevProps, prevState);
     }
   }
 
-  const oldNode = component._node;
+  console.log('oldNode?.parentNode?.replaceChild(newNode, oldNode);', newNode)
   oldNode?.parentNode?.replaceChild(newNode, oldNode);
 
-  component.componentDidMount?.();
+  instance.componentDidMount?.();
 
-  component._node = newNode;
+  // component._node = newNode;
 }
 
 export function unmount<P, S>(component: Component<P, S>) {
