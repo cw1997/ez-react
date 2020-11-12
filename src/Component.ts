@@ -2,8 +2,8 @@ import ReactDOM from 'ez-react-dom';
 import {ReactComponentElement, ReactElement} from "./index";
 
 export default abstract class Component<P, S> {
-  public _instance: Component<P, S>;
-  public _node?: ReactComponentElement<P, S>;
+  // public _instance: Component<P, S>;
+  public _node?: Node;
   public props: P;
   public state: S;
   public constructor(props?: P) {
@@ -83,9 +83,8 @@ export function render<P, S>(instance: Component<P, S>, nextProps: P, nextState:
 
   instance.props = nextProps;
   instance.state = nextState;
-  // const newNode = ReactDOM._directRender(component.render());
-  const newNode: ReactElement = ReactDOM._diffRender(oldNode, instance.render());
-  newNode._node = newNode;
+  const newVirtualNode = instance.render();
+  const newNode = ReactDOM._diffRender(oldNode, newVirtualNode);
   newNode._instance = instance;
   instance._node = newNode
 
@@ -98,12 +97,7 @@ export function render<P, S>(instance: Component<P, S>, nextProps: P, nextState:
     }
   }
 
-  console.log('oldNode?.parentNode?.replaceChild(newNode, oldNode);', newNode)
-  oldNode?.parentNode?.replaceChild(newNode, oldNode);
-
   instance.componentDidMount?.();
-
-  // component._node = newNode;
 }
 
 export function unmount<P, S>(component: Component<P, S>) {

@@ -6,7 +6,7 @@ export type ReactComponent<P, S> = FC<P> | Component<P, S>;
 
 export type Key = string | number
 
-export interface ReactHTMLElement extends Element {
+export interface ReactHTMLElement extends Node {
   key?: Key
 }
 
@@ -18,7 +18,10 @@ export interface ReactComponentElement<P, S> extends ReactHTMLElement {
   _node?: Node
 }
 
-export type ReactElement = ReactComponentElement<any, any>
+export interface ReactElement extends ReactHTMLElement {
+  _instance?: Component<any, any>
+  _node?: Node
+}
 
 export type VirtualTextNode = number | string | boolean
 export type VirtualNode = VirtualHTMLDOM | VirtualComponentDOM | VirtualTextNode
