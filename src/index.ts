@@ -6,7 +6,7 @@ export type ReactComponent<P, S> = FC<P> | Component<P, S>;
 
 export type Key = string | number
 
-export interface ReactHTMLElement extends Node {
+export interface ReactHTMLElement extends HTMLElement {
   key?: Key
 }
 

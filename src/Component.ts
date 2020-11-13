@@ -2,7 +2,6 @@ import ReactDOM from 'ez-react-dom';
 import {ReactComponentElement, ReactElement} from "./index";
 
 export default abstract class Component<P, S> {
-  // public _instance: Component<P, S>;
   public _node?: Node;
   public props: P;
   public state: S;
@@ -56,9 +55,9 @@ export function create<P, S>(component: Function | ObjectConstructor, properties
 
 export function setProps<P, S>(instance: Component<P, S>, properties: P) {
   if (instance._node) {
-    instance.componentWillReceiveProps(properties);
+    instance.componentWillReceiveProps?.(properties);
   } else {
-    instance.componentWillMount();
+    instance.componentWillMount?.();
   }
 
   render(instance, properties, instance.state);
@@ -91,7 +90,7 @@ export function render<P, S>(instance: Component<P, S>, nextProps: P, nextState:
   if (oldNode) {
     if (instance.getSnapshotBeforeUpdate) {
       const snapshot = instance.getSnapshotBeforeUpdate(prevProps, prevState);
-      instance.componentDidUpdate(prevProps, prevState, snapshot);
+      instance.componentDidUpdate?.(prevProps, prevState, snapshot);
     } else if (instance.componentDidUpdate) {
       instance.componentDidUpdate(prevProps, prevState);
     }
@@ -100,9 +99,6 @@ export function render<P, S>(instance: Component<P, S>, nextProps: P, nextState:
   instance.componentDidMount?.();
 }
 
-export function unmount<P, S>(component: Component<P, S>) {
-  component.componentWillUnmount?.();
-
-  const node = component._node;
-  node.parentNode.removeChild(node);
+export function unmount<P, S>(instance: Component<P, S>) {
+  instance.componentWillUnmount?.();
 }
