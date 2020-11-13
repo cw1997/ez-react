@@ -41,7 +41,8 @@ export function create<P, S>(component: Function | ObjectConstructor, properties
   // class component
   if (Component.isPrototypeOf(component)) {
     instance = new (component as ObjectConstructor)(properties) as Component<P, S>;
-    // function component
+    autoBindThis(component as ObjectConstructor, instance);
+  // function component
   } else {
     class FunctionComponent extends Component<P, S> {
       render() {
@@ -101,4 +102,13 @@ export function render<P, S>(instance: Component<P, S>, nextProps: P, nextState:
 
 export function unmount<P, S>(instance: Component<P, S>) {
   instance.componentWillUnmount?.();
+}
+
+function autoBindThis<P, S>(component: ObjectConstructor, instance: Component<P, S>) {
+  const componentKeys = Reflect.ownKeys(component.prototype);
+  componentKeys.forEach(key => {
+    if (key !== 'constructor' && typeof instance[key] === 'function') {
+      instance[key] = instance[key].bind(instance)
+    }
+  })
 }
