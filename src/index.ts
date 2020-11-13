@@ -1,6 +1,9 @@
 import createElement from "./createElement";
-import Component, {create, setProps, unmount} from "./Component";
-import {FC} from "./FC";
+import {Component, FunctionComponent, create, setProps, unmount} from "./Component";
+
+export interface FC<P> {
+  (props: P): VirtualNode
+}
 
 export type ReactComponent<P, S> = FC<P> | Component<P, S>;
 
@@ -45,4 +48,4 @@ export interface VirtualComponentDOM extends VirtualCommonDOM {
 
 
 export default {createElement, Component};
-export {Component, FC, create, setProps, unmount};
+export {Component, FunctionComponent, create, setProps, unmount};

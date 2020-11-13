@@ -1,7 +1,7 @@
 import ReactDOM from 'ez-react-dom';
-import {ReactComponentElement, ReactElement} from "./index";
+import {FC, VirtualNode} from "./index";
 
-export default abstract class Component<P, S> {
+export abstract class Component<P, S> {
   public _node?: Node;
   public props: P;
   public state: S;
@@ -14,7 +14,7 @@ export default abstract class Component<P, S> {
     render(this, this.props, nextState);
     return nextState;
   }
-  public abstract render();
+  public abstract render(): VirtualNode;
   public componentWillMount() {};
   /**
    * @deprecate
@@ -36,7 +36,18 @@ export default abstract class Component<P, S> {
   public componentDidCatch?(error, info);
 }
 
-export function create<P, S>(component: Function | ObjectConstructor, properties: P): Component<P, S> {
+export class FunctionComponent<P> extends Component<P, never> {
+  private readonly renderFunction: (props: P) => VirtualNode;
+  constructor(renderFunction:(props: P) => VirtualNode, props: P) {
+    super(props);
+    this.renderFunction = renderFunction;
+  }
+  public render(): VirtualNode {
+    return this.renderFunction(this.props);
+  }
+}
+
+export function create<P, S>(component: FC<P> | ObjectConstructor, properties: P): Component<P, S> {
   let instance: Component<P, S>;
   // class component
   if (Component.isPrototypeOf(component)) {
@@ -44,17 +55,13 @@ export function create<P, S>(component: Function | ObjectConstructor, properties
     autoBindThis(component as ObjectConstructor, instance);
   // function component
   } else {
-    class FunctionComponent extends Component<P, S> {
-      render() {
-        return (component as Function)(this.props)
-      };
-    }
-    instance = new FunctionComponent(properties);
+    instance = new FunctionComponent(component, properties);
   }
   return instance;
 }
 
-export function setProps<P, S>(instance: Component<P, S>, properties: P) {
+export function setProps<P, S>(instance: Component<P, S>) {
+  const properties: P = instance.props;
   if (instance._node) {
     instance.componentWillReceiveProps?.(properties);
   } else {
