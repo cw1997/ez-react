@@ -60,8 +60,7 @@ export function create<P, S>(component: FC<P> | ObjectConstructor, properties: P
   return instance;
 }
 
-export function setProps<P, S>(instance: Component<P, S>) {
-  const properties: P = instance.props;
+export function setProps<P, S>(instance: Component<P, S>, properties: P) {
   if (instance._node) {
     instance.componentWillReceiveProps?.(properties);
   } else {

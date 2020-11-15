@@ -1,6 +1,9 @@
 import createElement from "./createElement";
 import {Component, FunctionComponent, create, setProps, unmount} from "./Component";
 
+export default {createElement, Component};
+export {FunctionComponent, create, setProps, unmount};
+
 export interface FC<P> {
   (props: P): VirtualNode
 }
@@ -9,11 +12,17 @@ export type ReactComponent<P, S> = FC<P> | Component<P, S>;
 
 export type Key = string | number
 
-export interface ReactHTMLElement extends HTMLElement {
-  key?: Key
+export type EventHandler = any
+
+export interface VirtualDOMAttributesWithoutEventHandler extends Element {
+  key: Key
+}
+export type VirtualDOMAttributes = VirtualDOMAttributesWithoutEventHandler | EventHandler
+
+export interface ReactHTMLElement extends Element {
 }
 
-export interface ReactTextElement extends Text {
+export interface ReactTextElement extends Node {
 }
 
 export interface ReactComponentElement<P, S> extends ReactHTMLElement {
@@ -26,8 +35,20 @@ export interface ReactElement extends ReactHTMLElement {
   _node?: Node
 }
 
+export interface ReactCommonNode extends Node {
+  _instance?: Component<any, any>
+  _node?: Node
+}
+export interface ReactTextNode extends ReactCommonNode, Text {
+
+}
+export interface ReactHTMLNode extends ReactCommonNode {
+
+}
+export type ReactNode = ReactTextNode | ReactHTMLNode
+
 export type VirtualTextNode = number | string | boolean
-export type VirtualNode = VirtualHTMLDOM | VirtualComponentDOM | VirtualTextNode
+export type VirtualNode = VirtualDOM | VirtualTextNode
 
 export interface VirtualCommonDOM {
   // tagName: string | ReactComponent<any, any>
@@ -38,14 +59,15 @@ export interface VirtualCommonDOM {
 
 export interface VirtualHTMLDOM extends VirtualCommonDOM {
   tagName: string
-  attributes?: HTMLElement
+  attributes: VirtualDOMAttributes
 }
 
 export interface VirtualComponentDOM extends VirtualCommonDOM {
   tagName: ReactComponent<any, any>
-  attributes?: ReactComponentElement<any, any>
+  attributes: VirtualDOMAttributes
 }
 
-
-export default {createElement, Component};
-export {Component, FunctionComponent, create, setProps, unmount};
+export interface VirtualDOM extends VirtualCommonDOM {
+  tagName: VirtualHTMLDOM['tagName'] | VirtualComponentDOM['tagName']
+  attributes: VirtualHTMLDOM['attributes'] | VirtualComponentDOM['attributes']
+}
