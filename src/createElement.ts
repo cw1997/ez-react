@@ -1,4 +1,4 @@
-import {VirtualDOM} from "./index";
+import {VirtualDOM} from ".";
 
 export default function createElement(
   tagName: VirtualDOM['tagName'],
