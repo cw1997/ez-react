@@ -1,5 +1,5 @@
 {
-  "name": "ez-react",
+  "name": "@cw1997/ez-react",
   "version": "1.0.0",
   "description": "A simple implementation of react",
   "main": "src/index.ts",
