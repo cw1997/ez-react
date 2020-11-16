@@ -8,7 +8,7 @@ describe('test ez-react', () => {
         React.createElement(
           'a',
           {
-            onclick: () => alert(1),
+            onclick: (e: MouseEvent) => alert(1),
           },
           React.createElement('div', {}, 123, 'second child'),
           React.createElement('span', {}, false, 'this is span', true),

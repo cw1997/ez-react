@@ -1,7 +1,8 @@
 import ReactDOM from 'ez-react-dom';
+import {FC, VirtualNode} from "./index";
 
-export default abstract class Component<P, S> {
-  public node?: HTMLElement | Text;
+export abstract class Component<P, S> {
+  public _node?: Node;
   public props: P;
   public state: S;
   public constructor(props?: P) {
@@ -13,7 +14,7 @@ export default abstract class Component<P, S> {
     render(this, this.props, nextState);
     return nextState;
   }
-  public abstract render();
+  public abstract render(): VirtualNode;
   public componentWillMount() {};
   /**
    * @deprecate
@@ -35,66 +36,85 @@ export default abstract class Component<P, S> {
   public componentDidCatch?(error, info);
 }
 
-export function create<P, S>(component: Function | ObjectConstructor, properties: P): Component<P, S> {
+export class FunctionComponent<P> extends Component<P, never> {
+  private readonly renderFunction: (props: P) => VirtualNode;
+  constructor(renderFunction:(props: P) => VirtualNode, props: P) {
+    super(props);
+    this.renderFunction = renderFunction;
+  }
+  public render(): VirtualNode {
+    return this.renderFunction(this.props);
+  }
+}
+
+export function create<P, S>(component: FC<P> | ObjectConstructor, properties: P): Component<P, S> {
   let instance: Component<P, S>;
   // class component
   if (Component.isPrototypeOf(component)) {
     instance = new (component as ObjectConstructor)(properties) as Component<P, S>;
-    // function component
+    autoBindThis(component as ObjectConstructor, instance);
+  // function component
   } else {
-    class FunctionComponent extends Component<P, S> {
-      render() {
-        return (component as Function)(this.props)
-      };
-    }
-    instance = new FunctionComponent(properties);
+    instance = new FunctionComponent(component, properties);
   }
   return instance;
 }
 
-export function setProps<P, S>(component: Component<P, S>, properties: P) {
-  if (component.node) {
-    component.componentWillReceiveProps(properties);
+export function setProps<P, S>(instance: Component<P, S>, properties: P) {
+  if (instance._node) {
+    instance.componentWillReceiveProps?.(properties);
   } else {
-    component.componentWillMount();
+    instance.componentWillMount?.();
   }
 
-  render(component, properties, component.state);
+  render(instance, properties, instance.state);
 }
 
-export function render<P, S>(component: Component<P, S>, nextProps: P, nextState: S) {
-  const prevProps: P = component.props;
-  const prevState: S = component.state;
+export function render<P, S>(instance: Component<P, S>, nextProps: P, nextState: S) {
+  const prevProps: P = instance.props;
+  const prevState: S = instance.state;
+  const oldNode = instance._node;
 
-  if (component.node) {
-    if (component.getDerivedStateFromProps) {
-      component.getDerivedStateFromProps(nextProps, nextState);
-    } else if (component.componentWillUpdate) {
-      component.componentWillUpdate(nextProps, nextState);
+  if (oldNode) {
+    if (instance.getDerivedStateFromProps) {
+      instance.getDerivedStateFromProps(nextProps, nextState);
+    } else {
+      instance.componentWillUpdate?.(nextProps, nextState);
     }
   }
 
-  if (!component.shouldComponentUpdate(nextProps, nextState)) {
+  if (!instance.shouldComponentUpdate(nextProps, nextState)) {
     return;
   }
 
-  component.props = nextProps;
-  component.state = nextState;
-  const newNode = ReactDOM._render(component.render());
+  instance.props = nextProps;
+  instance.state = nextState;
+  const newVirtualNode = instance.render();
+  const newNode = ReactDOM._diffRender(oldNode, newVirtualNode);
+  newNode._instance = instance;
+  instance._node = newNode
 
-  if (component.node) {
-    if (component.getSnapshotBeforeUpdate) {
-      const snapshot = component.getSnapshotBeforeUpdate(prevProps, prevState);
-      component.componentDidUpdate(prevProps, prevState, snapshot);
-    } else if (component.componentDidUpdate) {
-      component.componentDidUpdate(prevProps, prevState);
+  if (oldNode) {
+    if (instance.getSnapshotBeforeUpdate) {
+      const snapshot = instance.getSnapshotBeforeUpdate(prevProps, prevState);
+      instance.componentDidUpdate?.(prevProps, prevState, snapshot);
+    } else if (instance.componentDidUpdate) {
+      instance.componentDidUpdate(prevProps, prevState);
     }
   }
 
-  const oldNode = component.node;
-  oldNode?.parentNode?.replaceChild(newNode, oldNode);
+  instance.componentDidMount?.();
+}
 
-  component.componentDidMount?.();
+export function unmount<P, S>(instance: Component<P, S>) {
+  instance.componentWillUnmount?.();
+}
 
-  component.node = newNode;
+function autoBindThis<P, S>(component: ObjectConstructor, instance: Component<P, S>) {
+  const componentKeys = Reflect.ownKeys(component.prototype);
+  componentKeys.forEach(key => {
+    if (key !== 'constructor' && typeof instance[key] === 'function') {
+      instance[key] = instance[key].bind(instance)
+    }
+  })
 }
