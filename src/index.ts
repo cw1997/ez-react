@@ -1,7 +1,7 @@
 import createElement from "./createElement";
 import {Component, FunctionComponent, create, setProps, unmount} from "./Component";
 
-export default {createElement, Component};
+export default {createElement, Component, createRef};
 export {FunctionComponent, create, setProps, unmount};
 
 export interface FC<P> {
@@ -70,4 +70,14 @@ export interface VirtualComponentDOM extends VirtualCommonDOM {
 export interface VirtualDOM extends VirtualCommonDOM {
   tagName: VirtualHTMLDOM['tagName'] | VirtualComponentDOM['tagName']
   attributes: VirtualHTMLDOM['attributes'] | VirtualComponentDOM['attributes']
+}
+
+// Ref
+export class Ref {
+  // current type is any, so it can store anything.
+  current: any
+}
+
+function createRef(): Ref {
+  return new Ref();
 }
