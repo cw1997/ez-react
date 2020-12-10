@@ -1,6 +1,6 @@
 {
   "name": "@cw1997/ez-react",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A simple implementation of react",
   "main": "src/index.ts",
   "scripts": {
@@ -40,6 +40,6 @@
     "webpack-cli": "^3.3.12"
   },
   "dependencies": {
-    "ez-react-dom": "^1.1.0"
+    "ez-react-dom": "^1.1.2"
   }
 }
