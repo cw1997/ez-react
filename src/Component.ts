@@ -5,34 +5,59 @@ export abstract class Component<P, S> {
   public _node?: Node;
   public props: P;
   public state: S;
+
   public constructor(props?: P) {
     this.props = props;
   }
+
   public setState(updateState: Partial<S>) {
     const nextState: S = {...this.state, ...updateState};
     this.state = nextState;
     render(this, this.props, nextState);
     return nextState;
   }
+  
   public abstract render(): VirtualNode;
+
   public componentWillMount() {};
+
   /**
    * @deprecate
    * @param nextProps
    */
-  public componentWillReceiveProps?(nextProps: P);
-  public getDerivedStateFromProps?(nextProps: P, nextState: S);
+  public UNSAFE_componentWillReceiveProps?(nextProps: P);
+
+  /**
+   * it is a static method, so you can't use the 'this' pointer.
+   * @param {P} nextProps
+   * @param {S} prevState
+   */
+  public static getDerivedStateFromProps?<P, S>(nextProps: P, prevState: S);
+
+  /**
+   * return true if you don't overwrite this method.
+   * @param {P} nextProps
+   * @param {S} nextState
+   * @returns {boolean}
+   */
   public shouldComponentUpdate(nextProps: P, nextState: S) {return true};
+
   /**
    * @deprecate
    * @param nextProps
    * @param nextState
    */
-  public componentWillUpdate?(nextProps: P, nextState: S);
+
+  public UNSAFE_componentWillUpdate?(nextProps: P, nextState: S);
+
   public getSnapshotBeforeUpdate?(prevProps: P, prevState: S);
+
   public componentDidUpdate?(prevProps: P, prevState: S, snapshot?);
+
   public componentDidMount?();
+
   public componentWillUnmount?();
+
   public componentDidCatch?(error, info);
 }
 
@@ -62,7 +87,7 @@ export function create<P, S>(component: FC<P> | ObjectConstructor, properties: P
 
 export function setProps<P, S>(instance: Component<P, S>, properties: P) {
   if (instance._node) {
-    instance.componentWillReceiveProps?.(properties);
+    instance.UNSAFE_componentWillReceiveProps?.(properties);
   } else {
     instance.componentWillMount?.();
   }
@@ -76,10 +101,11 @@ export function render<P, S>(instance: Component<P, S>, nextProps: P, nextState:
   const oldNode = instance._node;
 
   if (oldNode) {
-    if (instance.getDerivedStateFromProps) {
-      instance.getDerivedStateFromProps(nextProps, nextState);
+    // use new life-cycle function first
+    if (Component.getDerivedStateFromProps) {
+      Component.getDerivedStateFromProps(nextProps, prevState);
     } else {
-      instance.componentWillUpdate?.(nextProps, nextState);
+      instance.UNSAFE_componentWillUpdate?.(nextProps, nextState);
     }
   }
 
