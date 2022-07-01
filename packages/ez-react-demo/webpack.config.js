@@ -10,7 +10,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].[hash].min.js',
-    // if use cdn, remember adding publicPath
+    // if you use cdn, remember adding publicPath
     // publicPath: 'https://cdn.example.com/assets/[hash]/',
     // libraryTarget: 'umd',
   },
