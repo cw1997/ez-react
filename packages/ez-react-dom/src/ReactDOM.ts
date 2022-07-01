@@ -9,7 +9,7 @@ import {
   VirtualNode,
   VirtualTextNode,
   FunctionComponent, FC
-} from "ez-react";
+} from "@cw1997/ez-react";
 
 
 export default class ReactDOM {

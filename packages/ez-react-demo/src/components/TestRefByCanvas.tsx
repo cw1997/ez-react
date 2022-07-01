@@ -1,4 +1,4 @@
-import React, {Ref} from 'ez-react';
+import React, {Ref} from '@cw1997/ez-react';
 
 //import "./TestRef.sass"
 

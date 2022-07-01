@@ -1,5 +1,5 @@
 import React from '@cw1997/ez-react';
-import React from '@cw1997/ez-react-dom';
+import ReactDOM from '@cw1997/ez-react-dom';
 
 import './index.sass'
 import DataBinding from "./components/DataBinding";
