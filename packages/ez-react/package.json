@@ -6,9 +6,7 @@
   "scripts": {
     "start": "webpack --watch",
     "test": "jest",
-    "build": "webpack",
-    "deploy:local": "npm link",
-    "dev:local": "npm uninstall ez-react-dom && npm link && npm link ez-react-dom"
+    "build": "webpack"
   },
   "repository": {
     "type": "git",

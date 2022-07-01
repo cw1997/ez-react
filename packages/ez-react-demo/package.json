@@ -6,9 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "webpack-dev-server",
-    "build": "webpack",
-    "dev:public": "npm unlink @cw1997/ez-react ez-react-dom && npm install @cw1997/ez-react ez-react-dom",
-    "dev:local": "npm uninstall @cw1997/ez-react ez-react-dom && npm link @cw1997/ez-react ez-react-dom"
+    "build": "webpack"
   },
   "keywords": [],
   "author": "",
