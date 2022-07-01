@@ -26,13 +26,13 @@ function App(props: { data: string }) {
         <a href="https://github.com/cw1997/ez-react">https://github.com/cw1997/ez-react</a>
       </p>
     </div>
-    <pre>
-      git clone https://github.com/cw1997/ez-react.git
-      cd ez-react
-      pnpm install
-      cd packages/ez-react-demo
-      pnpm start
-    </pre>
+    <div style={{padding: 16, backgroundColor: 'lightgray'}}>
+      <pre>git clone https://github.com/cw1997/ez-react.git</pre>
+      <pre>cd ez-react</pre>
+      <pre>pnpm install</pre>
+      <pre>cd packages/ez-react-demo</pre>
+      <pre>pnpm start</pre>
+    </div>
   </div>
   return (
     <div className="App">
