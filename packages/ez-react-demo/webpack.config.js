@@ -30,7 +30,7 @@ module.exports = {
     }, {
       test: /\.css$/,
       use: [{
-        loader: 'style-loader',
+        loader: MiniCssExtractPlugin.loader,
       }, {
         loader: "css-loader",
       },],
@@ -38,7 +38,7 @@ module.exports = {
     }, {
       test: /\.s[ca]ss$/,
       use: [{
-        loader: 'style-loader',
+        loader: MiniCssExtractPlugin.loader,
       }, {
         loader: 'css-loader',
       }, {
@@ -77,6 +77,7 @@ module.exports = {
       inject: true,
     }),
     new ErrorOverlayPlugin(),
+    new MiniCssExtractPlugin(),
   ],
   mode: "development",
   devtool: 'cheap-module-source-map',
