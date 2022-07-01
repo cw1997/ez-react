@@ -81,17 +81,15 @@ module.exports = {
   mode: "development",
   devtool: 'cheap-module-source-map',
   // devtool: 'eval', // 'eval' is not supported by error-overlay-webpack-plugin
+  
   devServer: {
-    contentBase: "./dist",
     host: "127.0.0.1",
     port: 7991,
     historyApiFallback: true,
-    overlay: {
-      errors: true
-    },
     open: true,
-    inline: true,
     hot: true,
     compress: false,
+    http2: false,
+    https: false,
   },
 };
