@@ -1,5 +1,5 @@
 {
-  "name": "ez-react",
+  "name": "@cw1997/ez-react",
   "version": "2.0.0",
   "description": "A simple implementation of react",
   "main": "src/index.ts",
@@ -27,6 +27,6 @@
   },
   "homepage": "https://github.com/cw1997/ez-react#readme",
   "dependencies": {
-    "ez-react-dom": "workspace:*"
+    "@cw1997/ez-react-dom": "workspace:*"
   }
 }

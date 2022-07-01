@@ -1,5 +1,5 @@
 {
-  "name": "ez-react-demo",
+  "name": "@cw1997/ez-react-demo",
   "version": "1.0.0",
   "description": "",
   "main": "src/index.tsx",
@@ -34,11 +34,11 @@
     "webpack": "^4.44.1",
     "webpack-cli": "^3.3.12",
     "webpack-dev-server": "^3.11.0",
-    "webpack-merge": "^5.1.2"
+    "webpack-merge": "^5.1.2",
+    "sass": "^1.53.0"
   },
   "dependencies": {
-    "ez-react": "workspace:*",
-    "ez-react-dom": "workspace:*",
-    "sass": "^1.53.0"
+    "@cw1997/ez-react": "workspace:*",
+    "@cw1997/ez-react-dom": "workspace:*"
   }
 }

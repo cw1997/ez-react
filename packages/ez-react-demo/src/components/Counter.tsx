@@ -1,4 +1,4 @@
-import React from 'ez-react';
+import React from '@cw1997/ez-react';
 
 //import "./Counter.sass"
 
