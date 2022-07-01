@@ -11,3 +11,17 @@ You can use these npm packages as the official React.js and ReactDOM
     - Life cycle
     - Re-render when the state changes
     - Ref API
+
+# Demo
+
+## Online
+https://ez-react.changwei.me/
+
+# Local
+````
+git clone git@github.com:cw1997/ez-react.git # or https://github.com/cw1997/ez-react.git
+cd ez-react
+pnpm install
+cd packages/ez-react-demo
+npm start
+````
