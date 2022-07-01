@@ -86,7 +86,7 @@ describe('ez-react-dom', () => {
           id="my-div"
           data-info="my-data-info"
         >
-          hello{' '}<FunctionComponentWithProperties name={name}/>!
+          hello{' '}<FunctionComponentWithProperties name={props.name}/>!
         </div>
       );
       const expectedInnerHtml = '<div id="my-div" data-info="my-data-info">hello <span id="name"></span>!</div>';
@@ -106,7 +106,7 @@ describe('ez-react-dom', () => {
           onMouseEnter={(event) => MouseMoveEventHandler(event, 'enter')}
           onMouseOut={(event) => MouseMoveEventHandler(event, 'out')}
         >
-          hello <FunctionComponentWithProperties name={name}/>!
+          hello <FunctionComponentWithProperties name={props.name}/>!
         </div>
       );
       const expectedInnerHtml = '<div id="my-div" style="background-color: lightblue;">hello <span id="name"></span>!</div>';
@@ -125,7 +125,7 @@ describe('ez-react-dom', () => {
           // onclick={() => alert('hello world')}
           className="my-class"
         >
-          hello <FunctionComponentWithProperties name={name}/>!
+          hello <FunctionComponentWithProperties name={props.name}/>!
           <hr/>
           <label htmlFor="name-input">
             <input id="name-input" tabIndex={0}/>
@@ -144,7 +144,7 @@ describe('ez-react-dom', () => {
           // onclick={() => alert('hello world')}
           className="my-class"
         >
-          hello <FunctionComponentWithProperties name={name}/>!
+          hello <FunctionComponentWithProperties name={props.name}/>!
           <hr/>
           <label htmlFor="name-input">
             <input id="name-input" tabIndex={0}/>
@@ -162,7 +162,7 @@ describe('ez-react-dom', () => {
           style={false}
           className="my-class"
         >
-          hello <FunctionComponentWithProperties name={name}/>!
+          hello <FunctionComponentWithProperties name={props.name}/>!
           <hr/>
           <label htmlFor="name-input">
             <input id="name-input" tabIndex={0}/>
