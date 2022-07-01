@@ -1,0 +1,44 @@
+{
+  "name": "ez-react-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.tsx",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "webpack-dev-server",
+    "build": "webpack",
+    "dev:public": "npm unlink @cw1997/ez-react ez-react-dom && npm install @cw1997/ez-react ez-react-dom",
+    "dev:local": "npm uninstall @cw1997/ez-react ez-react-dom && npm link @cw1997/ez-react ez-react-dom"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.12.1",
+    "@babel/core": "^7.12.3",
+    "@babel/preset-env": "^7.12.1",
+    "@babel/preset-react": "^7.12.1",
+    "@babel/preset-typescript": "^7.12.1",
+    "babel-loader": "^8.1.0",
+    "babel-plugin-transform-class-properties": "^6.24.1",
+    "css-loader": "^5.0.0",
+    "error-overlay-webpack-plugin": "^0.4.1",
+    "file-loader": "^6.1.1",
+    "html-webpack-plugin": "^4.5.0",
+    "mini-css-extract-plugin": "^1.1.2",
+    "postcss-loader": "^4.0.4",
+    "sass-loader": "^10.0.4",
+    "style-loader": "^2.0.0",
+    "typescript": "^4.0.2",
+    "url-loader": "^4.1.1",
+    "webpack": "^4.44.1",
+    "webpack-cli": "^3.3.12",
+    "webpack-dev-server": "^3.11.0",
+    "webpack-merge": "^5.1.2"
+  },
+  "dependencies": {
+    "ez-react": "workspace:*",
+    "ez-react-dom": "workspace:*",
+    "sass": "^1.53.0"
+  }
+}
