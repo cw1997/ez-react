@@ -53,7 +53,6 @@ importers:
       postcss-loader: ^7.0.0
       sass: ^1.53.0
       sass-loader: ^13.0.2
-      style-loader: ^3.3.1
       typescript: ^4.7.4
       url-loader: ^4.1.1
       webpack: ^5.73.0
@@ -79,7 +78,6 @@ importers:
       postcss-loader: 7.0.0_webpack@5.73.0
       sass: 1.53.0
       sass-loader: 13.0.2_sass@1.53.0+webpack@5.73.0
-      style-loader: 3.3.1_webpack@5.73.0
       typescript: 4.7.4
       url-loader: 4.1.1_file-loader@6.2.0+webpack@5.73.0
       webpack: 5.73.0_webpack-cli@4.10.0
@@ -2028,7 +2026,7 @@ packages:
       webpack-cli: 4.x.x
     dependencies:
       webpack: 5.73.0_webpack-cli@4.10.0
-      webpack-cli: 4.10.0_webpack@5.73.0
+      webpack-cli: 4.10.0_f445dff6f76f0ed3133a4ab59560a372
     dev: true
 
   /@webpack-cli/info/1.5.0_webpack-cli@4.10.0:
@@ -2037,7 +2035,7 @@ packages:
       webpack-cli: 4.x.x
     dependencies:
       envinfo: 7.8.1
-      webpack-cli: 4.10.0_webpack@5.73.0
+      webpack-cli: 4.10.0_f445dff6f76f0ed3133a4ab59560a372
     dev: true
 
   /@webpack-cli/serve/1.7.0_4c58ec6b3c7bd9e91c91ce21a56852c0:
@@ -5690,15 +5688,6 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
-  /style-loader/3.3.1_webpack@5.73.0:
-    resolution: {integrity: sha512-GPcQ+LDJbrcxHORTRes6Jy2sfvK2kS6hpSfI/fXhPt+spVzxF6LJ1dHLN9zIGmVaaP044YKaIatFaufENRiDoQ==}
-    engines: {node: '>= 12.13.0'}
-    peerDependencies:
-      webpack: ^5.0.0
-    dependencies:
-      webpack: 5.73.0_webpack-cli@4.10.0
-    dev: true
-
   /supports-color/2.0.0:
     resolution: {integrity: sha512-KKNVtd6pCYgPIKU4cp2733HWYCpplQhddZLBUryaAHou723x+FRzQ5Df824Fj+IyyuiQTRoub4SnIFfIcrp70g==}
     engines: {node: '>=0.8.0'}
@@ -6179,7 +6168,7 @@ packages:
       tapable: 2.2.1
       terser-webpack-plugin: 5.3.3_webpack@5.73.0
       watchpack: 2.4.0
-      webpack-cli: 4.10.0_webpack@5.73.0
+      webpack-cli: 4.10.0_f445dff6f76f0ed3133a4ab59560a372
       webpack-sources: 3.2.3
     transitivePeerDependencies:
       - '@swc/core'
