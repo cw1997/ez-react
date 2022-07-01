@@ -1,4 +1,4 @@
-import ReactDOM from 'ez-react-dom';
+import ReactDOM from '@cw1997/ez-react-dom'
 import {FC, VirtualNode} from "./index";
 
 export abstract class Component<P, S> {

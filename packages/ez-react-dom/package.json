@@ -1,0 +1,30 @@
+{
+  "name": "@cw1997/ez-react-dom",
+  "version": "2.0.0",
+  "description": "A simple implementation of react-dom",
+  "main": "src/index.ts",
+  "scripts": {
+    "start": "webpack --watch",
+    "test": "jest",
+    "build": "webpack"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/cw1997/ez-react-dom.git"
+  },
+  "keywords": [
+    "react",
+    "framework",
+    "typescript",
+    "javascript"
+  ],
+  "author": "cw1997",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/cw1997/ez-react-dom/issues"
+  },
+  "homepage": "https://github.com/cw1997/ez-react-dom#readme",
+  "dependencies": {
+    "@cw1997/ez-react": "workspace:*"
+  }
+}
