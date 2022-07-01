@@ -1,15 +1,6 @@
 {
   "name": "@cw1997/ez-react",
-  "version": "2.0.0",
   "description": "A simple implementation of react",
-  "main": "src/index.ts",
-  "scripts": {
-    "start": "webpack --watch",
-    "test": "jest",
-    "build": "webpack",
-    "deploy:local": "npm link",
-    "dev:local": "npm uninstall ez-react-dom && npm link && npm link ez-react-dom"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/cw1997/ez-react.git"
