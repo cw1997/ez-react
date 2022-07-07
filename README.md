@@ -1,7 +1,7 @@
 # ez-react
 This is a simple implementation of React.js and ReactDOM named '@cw1997/ez-react' and '@cw1997/ez-react-dom'
 
-You can use these npm packages as the official React.js and ReactDOM
+You can use these libraries as a mini edition of official React.js and ReactDOM.
 
 # Features
 - Generating VirtualDOM from JSX createElement function
